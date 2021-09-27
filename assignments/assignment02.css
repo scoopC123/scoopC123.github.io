@@ -72,9 +72,10 @@ span.c{
 
 [alt="bird icon"] {
 	position: absolute;
-	top: 2100px;
-	left:	250px;
 	z-index:	1;
+	display: block;
+	right: 250px;
+	below: 50px;
 }
 
 nav{
