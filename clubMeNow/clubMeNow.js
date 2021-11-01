@@ -75,13 +75,16 @@ function appendTableRows() {
 		cell5.innerHTML = "<button class='btn btn-success cmn_noPadding cmn_fullHeight' onclick='displayClubDistanceEntryForm(" + i + ");'>&nbsp;&nbsp;+&nbsp;&nbsp;</button>";
 		cell6.innerHTML = clubs[i][2]; // clubName
 		// cell6.innerHTML = clubs[i][2] + ", " + clubs[i][7] + "&deg;"; 
+
 	}
 }
 
 // navigate to "club ENTRY" screen (enter a new club, not a distance)
 function displayClubEntry() {
-	window.location.href = "clubEntry.html"; 
+	window.location.href = "clubEntry.html";
+	
 }
+
 
 // navigate to "Distance Entry" screen (from one of the club "+" buttons)
 function displayClubDistanceEntryForm(c) {
@@ -92,6 +95,10 @@ function displayClubDistanceEntryForm(c) {
 // replace the current "clubs" array with the previous one
 function undoLastShot() {
         // your code here !
+		
+		localStorage.clubs = localStorage.clubsUndo;
+		clubs = JSON.parse(localStorage.getItem("clubsUndo"));
+		window.location.href = "clubDistanceList.html";  
 }
 
 // create a new (default) "clubs" array
@@ -104,8 +111,6 @@ function resetAllClubDistances() {
 		[ 199, "Dr",  "Driver",   0, 0, 0, 0, 10.5, 230, 200],
 		[ 300, "3+w", "3+ wood",  0, 0, 0, 0, 13.5, 210, 180],
 		[ 350, "3h",  "3 hybrid", 0, 0, 0, 0, 18.0, 180, 160],
-		// [ 399, "3i",  "3 iron",   0, 0, 0, 0, 18.5, 180, 160],
-		// [ 499, "4i",  "4 iron",   0, 0, 0, 0, 18.5, 170, 150],
 		[ 599, "5i",  "5 iron",   0, 0, 0, 0, 21.0, 160, 140],
 		[ 699, "6i",  "6 iron",   0, 0, 0, 0, 24.0, 150, 130],
 		[ 799, "7i",  "7 iron",   0, 0, 0, 0, 27.0, 140, 120],
@@ -204,3 +209,4 @@ function updateStats(shotDistance=0) {
 		window.location.href = "clubDistanceList.html"; 
 	}
 }
+
