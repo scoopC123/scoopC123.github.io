@@ -7,6 +7,7 @@ var URL = "https://api.covid19api.com/summary";
 var covidJson;
 var covidJsObj;
 var newConfirmedOver1000;
+var newArray;
 
 // AJAX variable
 var xhttp;
@@ -30,7 +31,13 @@ var chartData = {
       label: 'oranges',
       data: [2, 29, 5, 5, 2, 3, 10],
       backgroundColor: "rgba(255,140,0,0.4)"
-    }]
+    },
+		{
+      label: 'bananas',
+      data: [2, 29, 5, 5, 2, 3, 10],
+      backgroundColor: "rgba(255,140,0,0.4)"
+    }
+	]
   },
   options: {
     title: {
@@ -76,10 +83,22 @@ function loadContent() {
     if (this.readyState == 4 
         && this.status == 200) {
       
-      covidJson = this.responseText;
-      covidJsObj = JSON.parse(covidJson);
+      covidJson = this.responseText;	 
+	 
+	  //jsonStr = JSON.stringify(covidJson);
+	  //covidJsObj = JSON.parse(covidJson);
+	  //localStorage.setItem("covidJsObj", this.responseText);
+	  
+	  if (localStorage.getItem("covidJsObj")){ 
+		covidJsObj = JSON.parse(localStorage.getItem("covidJsObj"));
+	  }
+	  else{
+	  
+	  }
+	  
+	  
       newConfirmedOver1000 = [];
-      
+      newArray = [];
 	    for (let c of covidJsObj.Countries) {
         if (c.NewConfirmed > 5000) {
           newConfirmedOver1000.push({ 
@@ -89,9 +108,21 @@ function loadContent() {
           });
         }
       }
-      newConfirmedOver1000 = _.orderBy(newConfirmedOver1000, "NewDeaths", "desc");
+	  for (let e of covidJsObj.Countries){
+		 if (e.TotalDeaths >= 50000) {
+		newArray.push({
+			"Slug":e.Slug,
+			"TotalConfirmed": e.TotalConfirmed,
+			"TotalDeaths": e.TotalDeaths,
+			"Population": populations[e.Slug],
+			"TotalConfirmedPer100000": Math.round((e.TotalConfirmed/populations[e.Slug]) * 100000),
+			})	
+		 }
+		};
+	  newArray=_.orderBy(newArray, "TotalConfirmedPer100000", "desc");
+      //newConfirmedOver1000 = _.orderBy(newConfirmedOver1000, "NewDeaths", "desc");
 
-       chartData.data.datasets[0].backgroundColor 
+/*        chartData.data.datasets[0].backgroundColor 
         = "rgba(100,100,100,0.4)"; // gray
       chartData.data.datasets[1].backgroundColor 
         = "rgba(255,0,0,0.4)"; // red
@@ -107,10 +138,42 @@ function loadContent() {
       chartData.data.datasets[1].data  
         = newConfirmedOver1000.map( 
           (x) => x.NewDeaths );
+      chartData.options.title.text  */
+	  
+	  chartData.data.datasets[0].backgroundColor 
+        = "rgba(100,100,100,0.4)"; // gray
+      chartData.data.datasets[1].backgroundColor 
+        = "rgba(255,0,0,0.4)"; // red
+      chartData.data.datasets[2].backgroundColor 
+        = "rgba(75, 119, 190, 1)"; //blue
+		
+      chartData.data.datasets[0].label  
+        = 'total cases';
+      chartData.data.datasets[1].label  
+        = 'total deaths';
+	  chartData.data.datasets[2].label
+	    = 'total cases per 100000';
+      
+	  chartData.data.labels  
+        = newArray.map( (x) => x.Slug );
+      
+	  chartData.data.datasets[0].data  
+        = newArray.map( 
+          (x) => x.TotalConfirmed );
+		  
+      chartData.data.datasets[1].data  
+        = newArray.map( 
+          (x) => x.TotalDeaths );
+		
+	  chartData.data.datasets[2].data
+		= newArray.map(
+		  (x) => x.TotalConfirmedPer100000 );
+		  
       chartData.options.title.text 
 	  //Q1
         = (dayjs().format("YYYY-MM-DD")) + " " + "Covid 19 Hotspots" ;
-      myChart = new Chart(ctx, chartData); 
+     
+	 myChart = new Chart(ctx, chartData); 
 	  
     } // end if
 
@@ -126,7 +189,7 @@ function loadContent() {
 
 // data from: https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population
 var populations = {
-  'china' : 1405137440,
+'china' : 1405137440,
 'india' : 1369152434,
 'united-states' : 330578332,
 'indonesia' : 269603400,
@@ -233,14 +296,14 @@ var populations = {
 // loop through all covidJsObj.Countries[i] 
 // push all info i need
 
-var newArray = []
 
-for (let i=0; i<covidJsObj.Countries.length; i++){
-  newArray.push({
-    "Slug": "\"" + covidJsObj.Countries[i].Slug + "\"",
-    "TotalConfirmed": covidJsObj.Countries[i].TotalConfirmed,
-    "TotalDeaths": covidJsObj.Countries[i].TotalDeaths,
-	"Population": populations[covidJsObj.Countries[i].Slug],
-	"TotalConfirmedPer1000000": (covidJsObj.Countries[i].TotalConfirmed/populations[covidJsObj.Countries[i].Slug]) * 100000,
-  })
-};
+/*  
+ for (let i=0; i<covidJsObj.Countries.length; i++){
+		newArray.push({
+			"Slug": "\"" + covidJsObj.Countries[i].Slug + "\"",
+			"TotalConfirmed": covidJsObj.Countries[i].TotalConfirmed,
+			"TotalDeaths": covidJsObj.Countries[i].TotalDeaths,
+			"Population": populations[covidJsObj.Countries[i].Slug],
+			"TotalConfirmedPer100000": Math.round((covidJsObj.Countries[i].TotalConfirmed/populations[covidJsObj.Countries[i].Slug]) * 100000),
+			})
+		}; */
