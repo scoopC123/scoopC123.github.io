@@ -84,17 +84,9 @@ function loadContent() {
         && this.status == 200) {
       
       covidJson = this.responseText;	 
-	 
-	  //jsonStr = JSON.stringify(covidJson);
-	  //covidJsObj = JSON.parse(covidJson);
-	  //localStorage.setItem("covidJsObj", this.responseText);
-	  
-	  if (localStorage.getItem("covidJsObj")){ 
-		covidJsObj = JSON.parse(localStorage.getItem("covidJsObj"));
-	  }
-	  else{
-	  
-	  }
+      covidJsObj = JSON.parse(covidJson);
+      localStorage.setItem("covidJsObj", this.responseText);
+
 	  
 	  
       newConfirmedOver1000 = [];
