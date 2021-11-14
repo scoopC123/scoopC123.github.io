@@ -48,14 +48,28 @@ var chartData = {
       yAxes: [{
         ticks: {
           // logarithmic scale ignores maxTicksLimit
-          maxTicksLimit: 11,
-          callback: function(label, index, labels) {
+          //maxTicksLimit: 11,
+           /* callback: function(label, index, labels) {
             return (   label/1000 > 9 
                     || label/1000 == 1 
                     || label/1000 == 0.1 
                     || label/1000 == 0.01) 
               ? label/1000+'k' :  "";
-          }
+          } */
+		 callback: function(label, index, labels) {
+            if (label/1000 == 100000)
+				return "10000k";
+			if (label/1000 == 10000)
+				return "1000k";
+			if (label/1000 == 100)
+				return "100k";
+			if (label/1000 == 10)
+				return "10k";
+			if (label/1000 == 1)
+				return "1k";
+			if (label/1000 == 0.1)
+				return "0.1k";
+		  }
         },
         scaleLabel: {
           display: true,
@@ -84,10 +98,21 @@ function loadContent() {
         && this.status == 200) {
       
       covidJson = this.responseText;	 
-      covidJsObj = JSON.parse(covidJson);
-      localStorage.setItem("covidJsObj", this.responseText);
-
+	 
+	  //jsonStr = JSON.stringify(covidJson);
+	  localStorage.setItem("covidJsObj", this.responseText);
 	  
+	  covidJsObj = JSON.parse(covidJson);
+	  
+	  
+/* 	  if (localStorage.getItem("covidJsObj")){ 
+		
+		covidJsObj = JSON.parse(localStorage.getItem("covidJsObj"));
+	  }
+	  else{
+	  
+	  }
+	   */
 	  
       newConfirmedOver1000 = [];
       newArray = [];
