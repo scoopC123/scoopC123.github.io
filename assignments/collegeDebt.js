@@ -168,7 +168,7 @@ function totalInterest(){
 
 }
  */
-
+//Regie09 Code
 function updateLoansArray() {
   //takes user input and change the data in loans array using regex
 
@@ -216,7 +216,7 @@ function updateLoansArray() {
 } // end: function updateLoansArray()
 
 // INPUT Validation
-
+//My Regex
 function regexYear () {
   // Year validation
   // a year starting in 2000, up to 9999
@@ -249,6 +249,7 @@ function regexInterest (){
   if(regex.test(value)) document.getElementById("msg").innerHTML = "ok";
   else document.getElementById("msg").innerHTML = "invalid";
 }
+
 //Regie09 Code
 let updateForm = () => {
   loanWithInterest = 0;
