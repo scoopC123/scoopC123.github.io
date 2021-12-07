@@ -4,6 +4,8 @@ description: jquery exercise to demonstrate
 college loans	
 
 Portions of code borrowed from
+George Corser on Codepen
+https://codepen.io/gpcorser/pen/pogEQJw
 Regie09 on GitHub
 https://github.com/Regie09/regie092/blob/master/assignment06.html */
 
